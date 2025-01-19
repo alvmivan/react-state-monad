@@ -1,20 +1,17 @@
 {
   "compilerOptions": {
-    "target": "esnext",                    // Usar un target moderno compatible
-    "module": "esnext",                    // Usar módulos ES
-    "moduleResolution": "node",            // Resolución de módulos tipo Node
-    "declaration": true,                   // Generar los archivos .d.ts
-    "declarationDir": "./dist/types",      // El directorio de las declaraciones de tipo
-    "outDir": "./dist",                    // El directorio de salida para el bundle
-    "strict": true,                        // Habilitar el modo estricto
-    "esModuleInterop": true,               // Interoperabilidad con módulos ES
-    "skipLibCheck": true,                  // Omitir la comprobación de bibliotecas
-    "forceConsistentCasingInFileNames": true // Forzar la consistencia de las mayúsculas/minúsculas en los nombres de archivo
+    "moduleResolution": "Node",
+    "outDir": "dist",          // Carpeta donde se genera el código compilado
+    "declaration": true,       // Genera archivos de definición de tipos
+    "declarationDir": "dist/types",
+    "module": "ESNext",        // Utiliza ESNext para módulos
+    "target": "ESNext",        // Puedes cambiarlo a otra versión de JS si lo necesitas
+    "esModuleInterop": true    // Asegura que las importaciones se manejen correctamente
   },
   "include": [
-    "src/**/*"                             // Incluir los archivos fuente de la carpeta src
+    "src/**/*"
   ],
   "exclude": [
-    "node_modules"                         // Excluir node_modules
+    "node_modules"
   ]
 }
