@@ -1,5 +1,9 @@
 ﻿# React State Monad
 
+[![npm](https://img.shields.io/npm/v/react-state-monad)](https://www.npmjs.com/package/react-state-monad/)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/alvmivan/react-state-monad/publish.yml?branch=main)](https://github.com/alvmivan/react-state-monad/releases/latest)
+[![License](https://img.shields.io/github/license/alvmivan/react-state-monad)](./LICENSE)
+
 A set of hooks to manage/transform/filter states with monads in React.
 
 ## Description

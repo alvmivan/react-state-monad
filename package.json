@@ -1,7 +1,7 @@
 {
   "name": "react-state-monad",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "description": "A set of hooks to manage/transform/filter states with monads in React",
   "keywords": [
     "maybe",
