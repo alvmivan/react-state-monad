@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Node",
-    "outDir": "dist",          // Carpeta donde se genera el código compilado
-    "declaration": true,       // Genera archivos de definición de tipos
-    "declarationDir": "dist/types",
-    "module": "ESNext",        // Utiliza ESNext para módulos
-    "target": "ESNext",        // Puedes cambiarlo a otra versión de JS si lo necesitas
-    "esModuleInterop": true    // Asegura que las importaciones se manejen correctamente
+    "module": "ESNext",   // Para exportar módulos ES6
+    "target": "ESNext",   // Para tener soporte de sintaxis moderna
+    "declaration": true,  // Para generar archivos de tipo .d.ts
+    "declarationDir": "dist/types",  // Para poner los archivos .d.ts en un directorio separado
+    "outDir": "dist",  // Para compilar el código en dist/
+    "moduleResolution": "Node",  // Para resolución de módulos similar a Node.js
+    "esModuleInterop": true,  // Para interoperabilidad con módulos CommonJS
+    "strict": true   // Para que TypeScript sea más estricto en el tipo de los archivos
   },
   "include": [
     "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }
