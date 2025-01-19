@@ -1,7 +1,7 @@
 {
   "name": "react-state-monad",
   "type": "module",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A set of hooks to manage/transform/filter states with monads in React",
   "keywords": [
     "maybe",
@@ -34,7 +34,5 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/types/index.d.ts"
-  
-  
   
 }
