@@ -30,5 +30,8 @@
     "email": "alvmivan@gmail.com",
     "url": "https://github.com/alvmivan"
   },
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "main": "dist/index.js",     
+  "module": "dist/index.mjs",    
+  "types": "dist/types/index.d.ts"  
 }
