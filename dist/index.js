@@ -124,6 +124,14 @@ function useArrayState(states) {
   return useStateObject(states.filter((state) => state.hasValue).map((state) => state.value));
 }
 
+// src/hooks/useNullSafety.ts
+function useNullSafety(state) {
+  if (!state.hasValue) return new EmptyState();
+  if (state.value === void 0) return new EmptyState();
+  if (state.value === null) return new EmptyState();
+  return new ValidState(state.value, (value) => state.value = value);
+}
+
 // src/index.ts
 var index_default = void 0;
 export {
@@ -132,6 +140,7 @@ export {
   useElementState,
   useEmptyState,
   useFieldState,
+  useNullSafety,
   useRemapArray,
   useStateObject
 };
