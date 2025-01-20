@@ -134,6 +134,22 @@ Parameters:
 Returns an array of new `StateObject`s, each representing an element in the original array. This allows individual
 updates while keeping the array state synchronized. If the state has no value, it returns an empty array.
 
+
+### `useNullSafety<TOrigin>`
+
+This hook ensures a `StateObject` contains a defined, non-null value. If the `StateObject`'s value is `undefined` or `null`, it returns an `EmptyState`. Otherwise, it returns a `ValidState` with the value and a setter to update the value.
+
+Parameters:
+
+- `state`: The `StateObject` which may contain a value, `undefined`, or `null`.
+
+Returns a `StateObject` of type `TOrigin` representing the value if it is defined and non-null, otherwise an `EmptyState`.
+
+
+
+
+
+
 ### Complete Example
 
 Here's a more complete example demonstrating the usage of `useStateObject`, `useFieldState`, `useElementState`,

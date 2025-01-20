@@ -124,7 +124,7 @@ function useArrayState(states) {
   return useStateObject(states.filter((state) => state.hasValue).map((state) => state.value));
 }
 
-// index.ts
+// src/index.ts
 var index_default = void 0;
 export {
   index_default as default,

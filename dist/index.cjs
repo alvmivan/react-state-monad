@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// index.ts
+// src/index.ts
 var index_exports = {};
 __export(index_exports, {
   default: () => index_default,
@@ -156,7 +156,7 @@ function useArrayState(states) {
   return useStateObject(states.filter((state) => state.hasValue).map((state) => state.value));
 }
 
-// index.ts
+// src/index.ts
 var index_default = void 0;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
