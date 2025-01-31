@@ -9,18 +9,17 @@ function useFieldState(state, field) {
 }
 function useRemapKeysState(state) {
   if (!state.hasValue) {
-    return /* @__PURE__ */ new Map();
+    return {};
   }
   if (Array.isArray(state.value)) {
     console.warn("useRemapKeysState should be used with objects, use useRemapArray for arrays");
-    return /* @__PURE__ */ new Map();
+    return {};
   }
   const keys = Object.keys(state.value);
-  const map = /* @__PURE__ */ new Map();
-  keys.forEach((key) => {
-    map.set(key, useFieldState(state, key));
-  });
-  return map;
+  return keys.reduce((acc, key) => {
+    acc[key] = useFieldState(state, key);
+    return acc;
+  }, {});
 }
 
 // src/implementations/emptyState.ts
