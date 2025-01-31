@@ -29,24 +29,25 @@ export function useFieldState<TOriginal, TField>(
  * @returns A record where each key is mapped to a new StateObject for the corresponding field.
  */
 
-export function useRemapKeysState<TOriginal extends object, TField>(state: StateObject<TOriginal>): Record<string, StateObject<TField>> {
+export function useRemapKeysState<TOriginal extends object, TField>(state: StateObject<TOriginal>): Record<keyof TOriginal, StateObject<TField>> {
     // si state no tiene valor, retornar un invalid
 
     if (!state.hasValue) {
-        return {} as Record<string, StateObject<TField>>;
+        return {} as Record<keyof TOriginal, StateObject<TField>>;
     }
 
     if (Array.isArray(state.value)) {
         console.warn('useRemapKeysState should be used with objects, use useRemapArray for arrays');
-        return {} as Record<string, StateObject<TField>>;
+        return {} as Record<keyof TOriginal, StateObject<TField>>;
     }
 
-    const keys = Object.keys(state.value); 
-
+    const keys = Object.keys(state.value) as (keyof TOriginal)[];
+    
     return keys.reduce((acc, key) => {
-        acc[key] = useFieldState(state, key as ValidFieldFrom<TOriginal, TField>);
-        return acc;
-    }, {} as Record<string, StateObject<TField>>);
+            acc[key] = useFieldState(state, key as ValidFieldFrom<TOriginal, TField>);
+            return acc;
+        }
+        , {} as Record<keyof TOriginal, StateObject<TField>>);
 }
 
  
