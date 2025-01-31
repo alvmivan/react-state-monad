@@ -145,8 +145,15 @@ Parameters:
 
 Returns a `StateObject` of type `TOrigin` representing the value if it is defined and non-null, otherwise an `EmptyState`.
 
+### `useRemapKeysState<TOriginal, TField>`
 
+This hook remaps the keys of a state object to a record of `StateObject`s, allowing for independent updates of each key while keeping the overall object state synchronized.
 
+Parameters:
+
+- `state`: The `StateObject` containing the original state.
+
+Returns a record where each key is mapped to a new `StateObject` representing the value of that key, allowing individual updates while keeping the object state synchronized. If the state has no value or is an array, it returns an empty object.
 
 
 

@@ -21,36 +21,32 @@ export function useFieldState<TOriginal, TField>(
 }
 
 /**
- * Hook that remaps the keys of an object within a StateObject to a Map of StateObjects,
- * allowing for independent updates of each key while keeping the overall object state synchronized.
+ * Hook that remaps the keys of a state object to a record of StateObjects.
  *
  * @template TOriginal - The type of the original state object.
- * @param state - The StateObject containing the original object.
- * @returns A Map where each key is mapped to a new StateObject representing the value of that key,
- *          allowing individual updates while keeping the object state synchronized.
+ * @template TField - The type of the field value to be derived.
+ * @param state - The StateObject containing the original state.
+ * @returns A record where each key is mapped to a new StateObject for the corresponding field.
  */
 
-export function useRemapKeysState<TOriginal extends object, TField>(state: StateObject<TOriginal>): Map<string, StateObject<TField>> {
+export function useRemapKeysState<TOriginal extends object, TField>(state: StateObject<TOriginal>): Record<string, StateObject<TField>> {
     // si state no tiene valor, retornar un invalid
 
     if (!state.hasValue) {
-        return new Map<string, StateObject<TField>>();
+        return {} as Record<string, StateObject<TField>>;
     }
 
     if (Array.isArray(state.value)) {
         console.warn('useRemapKeysState should be used with objects, use useRemapArray for arrays');
-        return new Map<string, StateObject<TField>>();
+        return {} as Record<string, StateObject<TField>>;
     }
 
-    const keys = Object.keys(state.value);
+    const keys = Object.keys(state.value); 
 
-    const map = new Map<string, StateObject<TField>>();
-
-    keys.forEach((key) => {
-        map.set(key, useFieldState(state, key as ValidFieldFrom<TOriginal, TField>));
-    });
-
-    return map;
+    return keys.reduce((acc, key) => {
+        acc[key] = useFieldState(state, key as ValidFieldFrom<TOriginal, TField>);
+        return acc;
+    }, {} as Record<string, StateObject<TField>>);
 }
 
  
