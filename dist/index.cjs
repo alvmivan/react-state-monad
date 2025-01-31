@@ -27,6 +27,7 @@ __export(index_exports, {
   useFieldState: () => useFieldState,
   useNullSafety: () => useNullSafety,
   useRemapArray: () => useRemapArray,
+  useRemapKeysState: () => useRemapKeysState,
   useStateObject: () => useStateObject
 });
 module.exports = __toCommonJS(index_exports);
@@ -39,6 +40,21 @@ function useFieldState(state, field) {
     (newField, original) => ({ ...original, [field]: newField })
     // Updates the field with the new value.
   );
+}
+function useRemapKeysState(state) {
+  if (!state.hasValue) {
+    return /* @__PURE__ */ new Map();
+  }
+  if (Array.isArray(state.value)) {
+    console.warn("useRemapKeysState should be used with objects, use useRemapArray for arrays");
+    return /* @__PURE__ */ new Map();
+  }
+  const keys = Object.keys(state.value);
+  const map = /* @__PURE__ */ new Map();
+  keys.forEach((key) => {
+    map.set(key, useFieldState(state, key));
+  });
+  return map;
 }
 
 // src/implementations/emptyState.ts
@@ -175,5 +191,6 @@ var index_default = void 0;
   useFieldState,
   useNullSafety,
   useRemapArray,
+  useRemapKeysState,
   useStateObject
 });

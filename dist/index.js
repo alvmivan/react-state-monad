@@ -7,6 +7,21 @@ function useFieldState(state, field) {
     // Updates the field with the new value.
   );
 }
+function useRemapKeysState(state) {
+  if (!state.hasValue) {
+    return /* @__PURE__ */ new Map();
+  }
+  if (Array.isArray(state.value)) {
+    console.warn("useRemapKeysState should be used with objects, use useRemapArray for arrays");
+    return /* @__PURE__ */ new Map();
+  }
+  const keys = Object.keys(state.value);
+  const map = /* @__PURE__ */ new Map();
+  keys.forEach((key) => {
+    map.set(key, useFieldState(state, key));
+  });
+  return map;
+}
 
 // src/implementations/emptyState.ts
 var EmptyState = class _EmptyState {
@@ -142,5 +157,6 @@ export {
   useFieldState,
   useNullSafety,
   useRemapArray,
+  useRemapKeysState,
   useStateObject
 };

@@ -78,6 +78,16 @@ type ValidFieldFrom<TObject, TField> = {
  * @returns A new StateObject for the derived field.
  */
 declare function useFieldState<TOriginal, TField>(state: StateObject<TOriginal>, field: ValidFieldFrom<TOriginal, TField>): StateObject<TField>;
+/**
+ * Hook that remaps the keys of an object within a StateObject to a Map of StateObjects,
+ * allowing for independent updates of each key while keeping the overall object state synchronized.
+ *
+ * @template TOriginal - The type of the original state object.
+ * @param state - The StateObject containing the original object.
+ * @returns A Map where each key is mapped to a new StateObject representing the value of that key,
+ *          allowing individual updates while keeping the object state synchronized.
+ */
+declare function useRemapKeysState<TOriginal extends object, TField>(state: StateObject<TOriginal>): Map<string, StateObject<TField>>;
 
 /**
  * Hook that allows you to derive and update a specific element in an array within a StateObject.
@@ -141,4 +151,4 @@ declare function useNullSafety<TOrigin>(state: StateObject<TOrigin | undefined |
 
 declare const _default: undefined;
 
-export { type StateObject, _default as default, useArrayState, useElementState, useEmptyState, useFieldState, useNullSafety, useRemapArray, useStateObject };
+export { type StateObject, _default as default, useArrayState, useElementState, useEmptyState, useFieldState, useNullSafety, useRemapArray, useRemapKeysState, useStateObject };
