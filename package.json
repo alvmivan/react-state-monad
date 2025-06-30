@@ -1,7 +1,7 @@
 {
   "name": "react-state-monad",
   "type": "module",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "A set of hooks to manage/transform/filter states with monads in React",
   "keywords": [
     "maybe",
@@ -31,7 +31,18 @@
     "url": "https://github.com/alvmivan"
   },
   "license": "GPL-3.0",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts"
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
 }
