@@ -2,8 +2,10 @@
 import {ValidFieldFrom} from "./types";
 
 /**
+ * (DEPRECATED) -> it doesn't need to be a hook, and that complicates its usage
  * Hook that derives a field from the state object and creates a new StateObject for the field's value.
  *
+ * @deprecated do stateObject.getField() instead
  * @template TOriginal - The type of the original state object.
  * @template TField - The type of the field value to be derived.
  * @param state - The StateObject containing the original state.
@@ -21,8 +23,10 @@ export function useFieldState<TOriginal, TField>(
 }
 
 /**
+ * (DEPRECATED) -> it doesn't need to be a hook, and that complicates its usage
  * Hook that remaps the keys of a state object to a record of StateObjects.
  *
+ * @deprecated do stateObject.getFieldsByKeys() instead
  * @template TOriginal - The type of the original state object.
  * @template TField - The type of the field value to be derived.
  * @param state - The StateObject containing the original state.
@@ -44,7 +48,7 @@ export function useRemapKeysState<TOriginal extends object, TField>(state: State
     const keys = Object.keys(state.value) as (keyof TOriginal)[];
     
     return keys.reduce((acc, key) => {
-            acc[key] = useFieldState(state, key as ValidFieldFrom<TOriginal, TField>);
+            acc[key] = state.getField(key as ValidFieldFrom<TOriginal, TField>);
             return acc;
         }
         , {} as Record<keyof TOriginal, StateObject<TField>>);

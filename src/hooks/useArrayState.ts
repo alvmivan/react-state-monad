@@ -1,12 +1,14 @@
 ﻿import {StateObject} from "../stateObject";
 import {ValidState} from "../implementations/validState";
-import {useState} from "react";
 import {useStateObject} from "./useStateObject";
 
 /**
+ * (DEPRECATED) -> it doesn't need to be a hook, and that complicates its usage
+ * 
  * Hook that maps each element in an array within a StateObject to a new StateObject,
  * allowing for independent updates of each element while keeping the overall array state synchronized.
  *
+ * @deprecated use TransformState.remapArray instead
  * @template T - The type of the array elements.
  * @param state - The StateObject containing an array.
  * @returns An array of new StateObjects, each representing an element in the original array,
@@ -44,7 +46,7 @@ export function useRemapArray<T>(state: StateObject<T[]>): StateObject<T>[] {
  * @returns A new StateObject containing the array of StateObjects, allowing for updates to the whole array.
  */
 export function useArrayState<T>(states: StateObject<T>[]): StateObject<T[]> {
-    
+
     return useStateObject(states.filter(state => state.hasValue).map(state => state.value));
 
 }

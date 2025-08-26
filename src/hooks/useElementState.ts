@@ -3,8 +3,11 @@ import {EmptyState} from "../implementations/emptyState";
 import {ValidState} from "../implementations/validState";
 
 /**
+ * (DEPRECATED) -> it doesn't need to be a hook, and that complicates its usage
+ * 
  * Hook that allows you to derive and update a specific element in an array within a StateObject.
  *
+ * @deprecated use TransformState.elementAt instead
  * @template T - The type of the array elements.
  * @param state - The StateObject containing an array.
  * @param index - The index of the element to be derived.

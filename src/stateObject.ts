@@ -1,4 +1,6 @@
-﻿/**
+﻿import { ValidFieldFrom } from "./hooks/types";
+
+/**
  * Represents a state object that holds a value of type T, allowing various state operations.
  * This is the main interface for managing state, with operations like `map`, `filter`, and `flatMap`.
  * initialize with useStateObject<T>(initialState: T) hook
@@ -68,4 +70,32 @@ export type StateObject<T> = {
     flatMap<U>(
         mappingFunction: (t: T) => StateObject<U>
     ): StateObject<U>;
+
+    /**
+     * derives a field from the state object and creates a new StateObject for the field's value.
+     *  
+     * formerly hook: `useFieldState(state, field)`
+     
+    
+    * @template TField - The type of the field value to be derived.
+    * @param state - The StateObject containing the original state.
+    * @param field - The field name to be derived from the state.
+    * @returns A new StateObject for the derived field.
+    */
+    getField<TField>(
+        field: ValidFieldFrom<T, TField>
+    ): StateObject<TField>;
+    /**
+     * Remaps the keys of a state object to a record of StateObjects.
+     *
+     * @template TField - The type of the field value to be derived.
+     * @param state - The StateObject containing the original state.
+     * @returns A record where each key is mapped to a new StateObject for the corresponding field.
+    */
+    getFieldsByKeys<TField>(
+        keys: (keyof T)[]
+    ): Record<keyof T, StateObject<TField>>;
+   
 }
+
+

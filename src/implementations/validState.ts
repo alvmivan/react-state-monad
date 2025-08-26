@@ -1,5 +1,6 @@
 ﻿import {EmptyState} from "./emptyState";
 import {StateObject} from "../stateObject";
+import { ValidFieldFrom } from "../hooks/types";
 
 /**
  * Represents a state that holds a valid value of type T.
@@ -57,4 +58,47 @@ export class ValidState<T> implements StateObject<T> {
     filter(predicate: (t: T) => boolean): StateObject<T> {
         return predicate(this.state) ? (this as StateObject<T>) : new EmptyState<T>();  // Filters the state based on the predicate.
     }
+
+    getField<TField>(field: ValidFieldFrom<T, TField>): StateObject<TField> {
+        
+        if (!this.state){
+            throw new Error ('State is invalid');
+        }
+
+        if (typeof this.state !== 'object') {
+            throw new Error('State is not an object');
+        }
+
+        if (!this.state.hasOwnProperty(field)) {
+            throw new Error('Field does not exist');
+        }
+
+        return this.map(
+            (original) => original[field] as TField,  // Extracts the field value.
+            (newField, original) => ({...original, [field]: newField} as T)  // Updates the field with the new value.
+        );    
+    }
+
+    getFieldsByKeys<TField>(): Record<keyof T, StateObject<TField>> {
+        
+        const state = this;
+        
+        // si state no tiene valor, retornar un invalid
+        if (!state.hasValue) {
+            return {} as Record<keyof T, StateObject<TField>>;
+        }
+
+        if (Array.isArray(state.value)) {
+            console.warn('getFieldsByKeys should be used with objects, use remapArray for arrays');
+            return {} as Record<keyof T, StateObject<TField>>;
+        }
+
+        const keys = Object.keys(state.value as object) as (keyof T)[];
+        
+        return keys.reduce((acc, key) => {
+                acc[key] = state.getField(key as ValidFieldFrom<T, TField>);
+                return acc;
+            }
+            , {} as Record<keyof T, StateObject<TField>>);        
+        }
 }

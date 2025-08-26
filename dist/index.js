@@ -20,7 +20,11 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
+  CreateState: () => CreateState,
+  TransformState: () => TransformState,
   default: () => index_default,
+  newStateObject: () => newStateObject,
+  remapArray: () => remapArray,
   useArrayState: () => useArrayState,
   useElementState: () => useElementState,
   useEmptyState: () => useEmptyState,
@@ -52,7 +56,7 @@ function useRemapKeysState(state) {
   const keys = Object.keys(state.value);
   return keys.reduce(
     (acc, key) => {
-      acc[key] = useFieldState(state, key);
+      acc[key] = state.getField(key);
       return acc;
     },
     {}
@@ -60,10 +64,10 @@ function useRemapKeysState(state) {
 }
 
 // src/implementations/emptyState.ts
-var EmptyState = class _EmptyState {
+var EmptyState = class {
   // No value stored, returns an error when accessed.
   get value() {
-    throw new Error("Not implemented");
+    throw new Error("The state is empty");
   }
   get hasValue() {
     return false;
@@ -79,10 +83,16 @@ var EmptyState = class _EmptyState {
   set value(_) {
   }
   flatMap() {
-    return new _EmptyState();
+    return this;
   }
   map() {
-    return new _EmptyState();
+    return this;
+  }
+  getField() {
+    return this;
+  }
+  getFieldsByKeys() {
+    return {};
   }
 };
 
@@ -122,6 +132,41 @@ var ValidState = class _ValidState {
   filter(predicate) {
     return predicate(this.state) ? this : new EmptyState();
   }
+  getField(field) {
+    if (!this.state) {
+      throw new Error("State is invalid");
+    }
+    if (typeof this.state !== "object") {
+      throw new Error("State is not an object");
+    }
+    if (!this.state.hasOwnProperty(field)) {
+      throw new Error("Field does not exist");
+    }
+    return this.map(
+      (original) => original[field],
+      // Extracts the field value.
+      (newField, original) => ({ ...original, [field]: newField })
+      // Updates the field with the new value.
+    );
+  }
+  getFieldsByKeys() {
+    const state = this;
+    if (!state.hasValue) {
+      return {};
+    }
+    if (Array.isArray(state.value)) {
+      console.warn("getFieldsByKeys should be used with objects, use remapArray for arrays");
+      return {};
+    }
+    const keys = Object.keys(state.value);
+    return keys.reduce(
+      (acc, key) => {
+        acc[key] = state.getField(key);
+        return acc;
+      },
+      {}
+    );
+  }
 };
 
 // src/hooks/useElementState.ts
@@ -150,8 +195,11 @@ function useStateObject(initialState) {
   const [state, setState] = (0, import_react.useState)(initialState);
   return new ValidState(state, setState);
 }
+function newStateObject(state, setState) {
+  return new ValidState(state, setState);
+}
 
-// src/hooks/useRemapArray.ts
+// src/hooks/useArrayState.ts
 function useRemapArray(state) {
   if (!state.hasValue) return [];
   const count = state.value.length;
@@ -183,10 +231,72 @@ function useNullSafety(state) {
   return new ValidState(state.value, (value) => state.value = value);
 }
 
+// src/v2/creation.ts
+var genericEmptyState = Object.freeze(new EmptyState());
+function emptyState() {
+  return genericEmptyState;
+}
+function newStateObject2(state, setState) {
+  return new ValidState(state, setState);
+}
+var CreateState = {
+  newStateObject: newStateObject2,
+  emptyState
+};
+
+// src/v2/transformation.ts
+function nullSafety(state) {
+  if (!state.hasValue) return new EmptyState();
+  if (state.value === void 0) return new EmptyState();
+  if (state.value === null) return new EmptyState();
+  return new ValidState(state.value, (value) => state.value = value);
+}
+function elementAt(state, index) {
+  if (!state.hasValue || index < 0 || index >= state.value.length) {
+    return new EmptyState();
+  }
+  return new ValidState(
+    state.value[index],
+    (newElement) => {
+      const arrayCopy = [...state.value];
+      arrayCopy[index] = newElement;
+      state.value = arrayCopy;
+    }
+  );
+}
+function remapArray(state) {
+  if (!state.hasValue) return [];
+  const count = state.value.length;
+  const result = [];
+  for (let i = 0; i < count; i++) {
+    result.push(
+      new ValidState(
+        state.value[i],
+        // The current value of the element at index i.
+        (newElement) => {
+          const arrayCopy = [...state.value];
+          arrayCopy[i] = newElement;
+          state.value = arrayCopy;
+        }
+      )
+    );
+  }
+  return result;
+}
+var TransformState = {
+  nullSafety,
+  elementAt,
+  remapArray
+};
+
 // src/index.ts
 var index_default = void 0;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  CreateState,
+  TransformState,
+  newStateObject,
+  remapArray,
   useArrayState,
   useElementState,
   useEmptyState,
