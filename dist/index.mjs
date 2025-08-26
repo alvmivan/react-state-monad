@@ -1,37 +1,3 @@
-"use strict";
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/index.ts
-var index_exports = {};
-__export(index_exports, {
-  default: () => index_default,
-  useArrayState: () => useArrayState,
-  useElementState: () => useElementState,
-  useEmptyState: () => useEmptyState,
-  useFieldState: () => useFieldState,
-  useNullSafety: () => useNullSafety,
-  useRemapArray: () => useRemapArray,
-  useRemapKeysState: () => useRemapKeysState,
-  useStateObject: () => useStateObject
-});
-module.exports = __toCommonJS(index_exports);
-
 // src/hooks/useFieldState.ts
 function useFieldState(state, field) {
   return state.map(
@@ -145,9 +111,9 @@ function useEmptyState() {
 }
 
 // src/hooks/useStateObject.ts
-var import_react = require("react");
+import { useState } from "react";
 function useStateObject(initialState) {
-  const [state, setState] = (0, import_react.useState)(initialState);
+  const [state, setState] = useState(initialState);
   return new ValidState(state, setState);
 }
 
@@ -185,8 +151,8 @@ function useNullSafety(state) {
 
 // src/index.ts
 var index_default = void 0;
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
+export {
+  index_default as default,
   useArrayState,
   useElementState,
   useEmptyState,
@@ -195,4 +161,4 @@ var index_default = void 0;
   useRemapArray,
   useRemapKeysState,
   useStateObject
-});
+};

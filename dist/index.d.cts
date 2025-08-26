@@ -86,7 +86,7 @@ declare function useFieldState<TOriginal, TField>(state: StateObject<TOriginal>,
  * @param state - The StateObject containing the original state.
  * @returns A record where each key is mapped to a new StateObject for the corresponding field.
  */
-declare function useRemapKeysState<TOriginal extends object, TField>(state: StateObject<TOriginal>): Record<string, StateObject<TField>>;
+declare function useRemapKeysState<TOriginal extends object, TField>(state: StateObject<TOriginal>): Record<keyof TOriginal, StateObject<TField>>;
 
 /**
  * Hook that allows you to derive and update a specific element in an array within a StateObject.
